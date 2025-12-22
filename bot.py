@@ -1,4 +1,5 @@
 import requests
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder,
@@ -8,12 +9,12 @@ from telegram.ext import (
     filters,
 )
 
+
+
 # ================== CONFIG ==================
-
-BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-FORCE_CHANNEL = "@TechBotss"   # @channelusername
-
-TRUECALLER_API_KEY = "YOUR_TRUECALLER_APP_KEY"
+BOT_TOKEN = os.getenv("BOT")
+TRUECALLER_API_KEY = os.getenv("KEY")
+FORCE_CHANNEL = "@TechBotss"
 
 # Official Truecaller SDK lookup endpoint (example)
 TRUECALLER_API_URL = "https://api.truecaller.com/v1/lookup"
