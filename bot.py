@@ -9,8 +9,8 @@ except ModuleNotFoundError:
 
 # ================== CONFIG ==================
 url = "https://leakosintapi.com/"
-bot_token = ""      # BotFather token
-api_token = ""      # Leakosint token
+bot_token = "8241042964:AAE9K0eHvcFFj9vCbNow10jyuhbbqueevQs"      # BotFather token
+api_token = "8425262293:ZxawIiWZ"      # Leakosint token
 CHANNEL_USERNAME = "@techbotss"   # force join channel (without link)
 
 lang = "hi"
