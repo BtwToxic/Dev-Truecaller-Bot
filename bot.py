@@ -11,7 +11,7 @@ except ModuleNotFoundError:
 url = "https://leakosintapi.com/"
 bot_token = "8515482064:AAHJOeVKGR0faK1P7qnjyIIgUZDDnSdcisk"      # BotFather token
 api_token = "8425262293:ZxawIiWZ"      # Leakosint token
-CHANNEL_USERNAME = "@techbotss"   # force join channel (without link)
+CHANNEL_USERNAME = "@truecaller_api"   # force join channel (without link)
 
 lang = "hi"
 limit = 300
