@@ -1,5 +1,6 @@
 import requests
 from random import randint
+import threading
 
 try:
     import telebot
@@ -10,14 +11,20 @@ except ModuleNotFoundError:
 # ================== CONFIG ==================
 url = "https://leakosintapi.com/"
 bot_token = "8515482064:AAHJOeVKGR0faK1P7qnjyIIgUZDDnSdcisk"      # BotFather token
-api_token = "8425262293:ZxawIiWZ"      # Leakosint token
-CHANNEL_USERNAME = "@truecaller_api"   # force join channel (without link)
+api_token = "8425262293:ZxawIiWZ"                              # Leakosint token
+CHANNEL_USERNAME = "@truecaller_api"                           # force join channel
 
 lang = "hi"
 limit = 300
 # ============================================
 
 bot = telebot.TeleBot(bot_token)
+
+# ================== AUTO DELETE ==================
+def auto_delete(chat_id, message_id, delay=600):  # 600 sec = 10 min
+    timer = threading.Timer(delay, bot.delete_message, args=(chat_id, message_id))
+    timer.start()
+# ================================================
 
 # ================== ACCESS ==================
 def user_access_test(user_id):
@@ -26,9 +33,7 @@ def user_access_test(user_id):
 def is_user_joined(user_id):
     try:
         member = bot.get_chat_member(CHANNEL_USERNAME, user_id)
-        if member.status in ["member", "administrator", "creator"]:
-            return True
-        return False
+        return member.status in ["member", "administrator", "creator"]
     except:
         return False
 # ============================================
@@ -118,7 +123,7 @@ def send_welcome(message):
         )
         return
 
-    bot.reply_to(
+    msg = bot.reply_to(
         message,
         "👋 *Welcome!*\n\n"
         "🔍 Number / Email / Username bhejo\n"
@@ -126,6 +131,8 @@ def send_welcome(message):
         "⚡ Fast • Powerful • Clean",
         parse_mode="Markdown"
     )
+
+    auto_delete(message.chat.id, msg.message_id)
 # ============================================
 
 # ================== MESSAGE ==================
@@ -134,10 +141,7 @@ def echo_message(message):
     user_id = message.from_user.id
 
     if not is_user_joined(user_id):
-        bot.send_message(
-            message.chat.id,
-            f"❌ Pehle channel join karo:\n{CHANNEL_USERNAME}"
-        )
+        bot.send_message(message.chat.id, f"❌ Pehle channel join karo:\n{CHANNEL_USERNAME}")
         return
 
     if not user_access_test(user_id):
@@ -155,18 +159,21 @@ def echo_message(message):
         markup = create_inline_keyboard(query_id, 0, len(report))
 
         try:
-            bot.send_message(
+            msg = bot.send_message(
                 message.chat.id,
                 report[0],
                 parse_mode="html",
                 reply_markup=markup
             )
+            auto_delete(message.chat.id, msg.message_id)
+
         except telebot.apihelper.ApiTelegramException:
-            bot.send_message(
+            msg = bot.send_message(
                 message.chat.id,
                 report[0].replace("<b>", "").replace("</b>", ""),
                 reply_markup=markup
             )
+            auto_delete(message.chat.id, msg.message_id)
 # ============================================
 
 # ================== CALLBACK =================
